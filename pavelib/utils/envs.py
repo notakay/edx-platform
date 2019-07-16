@@ -3,6 +3,7 @@ Helper functions for loading environment settings.
 """
 from __future__ import print_function
 
+from __future__ import absolute_import
 import io
 import json
 import os
@@ -16,6 +17,7 @@ from paver.easy import BuildFailure, sh
 from six.moves import configparser
 
 from pavelib.utils.cmd import django_cmd
+import six
 
 
 def repo_root():
@@ -260,7 +262,7 @@ class Env(object):
                 ),
                 capture=True
             )
-            return unicode(value).strip()
+            return six.text_type(value).strip()
         except BuildFailure:
             print(u"Unable to print the value of the {} setting:".format(django_setting))
             with io.open(cls.PRINT_SETTINGS_LOG_FILE, 'r') as f:

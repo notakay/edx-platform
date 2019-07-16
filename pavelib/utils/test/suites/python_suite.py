@@ -1,6 +1,7 @@
 """
 Classes used for defining and running python test suites
 """
+from __future__ import absolute_import
 import os
 
 from pavelib.utils.test import utils as test_utils

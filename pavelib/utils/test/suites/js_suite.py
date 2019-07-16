@@ -2,6 +2,7 @@
 Javascript test tasks
 """
 
+from __future__ import absolute_import
 from paver import tasks
 
 from pavelib import assets

@@ -2,7 +2,8 @@
 Helper functions for bok_choy test tasks
 """
 from __future__ import print_function
-import httplib
+from __future__ import absolute_import
+import six.moves.http_client
 import os
 import subprocess
 import sys
@@ -15,6 +16,7 @@ from pavelib.utils.envs import Env
 from pavelib.utils.process import run_background_process
 from pavelib.utils.test.bokchoy_options import BOKCHOY_COVERAGERC, BOKCHOY_DEFAULT_STORE, BOKCHOY_DEFAULT_STORE_DEPR
 from pavelib.utils.timer import timed
+import six
 
 try:
     from pygments.console import colorize
@@ -40,7 +42,7 @@ def start_servers(options):
         print(cmd, logfile)
         run_background_process(cmd, out_log=logfile, err_log=logfile, cwd=cwd)
 
-    for service, info in Env.BOK_CHOY_SERVERS.iteritems():
+    for service, info in six.iteritems(Env.BOK_CHOY_SERVERS):
         address = "0.0.0.0:{}".format(info['port'])
         cmd = (u"DEFAULT_STORE={default_store} ").format(default_store=options.default_store)
         if coveragerc:
@@ -57,7 +59,7 @@ def start_servers(options):
         )
         start_server(cmd, info['log'])
 
-    for service, info in Env.BOK_CHOY_STUBS.iteritems():
+    for service, info in six.iteritems(Env.BOK_CHOY_STUBS):
         cmd = (
             u"python -m stubs.start {service} {port} "
             "{config}".format(
@@ -88,7 +90,7 @@ def wait_for_server(server, port):
 
     while attempts < 120:
         try:
-            connection = httplib.HTTPConnection(server, port, timeout=10)
+            connection = six.moves.http_client.HTTPConnection(server, port, timeout=10)
             connection.request('GET', '/')
             response = connection.getresponse()
 
@@ -109,7 +111,7 @@ def wait_for_test_servers():
     Wait until we get a successful response from the servers or time out
     """
 
-    for service, info in Env.BOK_CHOY_SERVERS.iteritems():
+    for service, info in six.iteritems(Env.BOK_CHOY_SERVERS):
         ready = wait_for_server(info['host'], info['port'])
         if not ready:
             msg = colorize(

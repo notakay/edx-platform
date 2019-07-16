@@ -4,6 +4,7 @@ Asset compilation and collection.
 
 from __future__ import print_function
 
+from __future__ import absolute_import
 import argparse
 import glob
 import os
@@ -24,6 +25,7 @@ from .utils.cmd import cmd, django_cmd
 from .utils.envs import Env
 from .utils.process import run_background_process
 from .utils.timer import timed
+import six
 
 # setup baseline paths
 
@@ -110,7 +112,7 @@ def get_sass_directories(system, theme_dir=None):
     :param theme_dir: absolute path of theme for which to compile sass files.
     """
     if system not in SYSTEMS:
-        raise ValueError(u"'system' must be one of ({allowed_values})".format(allowed_values=', '.join(SYSTEMS.keys())))
+        raise ValueError(u"'system' must be one of ({allowed_values})".format(allowed_values=', '.join(list(SYSTEMS.keys()))))
     system = SYSTEMS[system]
 
     applicable_directories = list()
@@ -822,7 +824,7 @@ def listfy(data):
         data: data structure to be converted.
     """
 
-    if isinstance(data, basestring):
+    if isinstance(data, six.string_types):
         data = data.split(',')
     elif not isinstance(data, list):
         data = [data]
@@ -852,7 +854,7 @@ def watch_assets(options):
     themes = get_parsed_option(options, 'themes')
     theme_dirs = get_parsed_option(options, 'theme_dirs', [])
 
-    default_wait = [unicode(DEFAULT_OBSERVER_TIMEOUT)]
+    default_wait = [six.text_type(DEFAULT_OBSERVER_TIMEOUT)]
     wait = float(get_parsed_option(options, 'wait', default_wait)[0])
 
     if not theme_dirs and themes:

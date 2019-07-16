@@ -3,6 +3,7 @@ Helper functions for managing processes.
 """
 from __future__ import print_function
 
+from __future__ import absolute_import
 import atexit
 import os
 import signal

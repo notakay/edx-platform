@@ -3,6 +3,7 @@ Install Python and Node prerequisites.
 """
 from __future__ import print_function
 
+from __future__ import absolute_import
 import hashlib
 import os
 import re
@@ -15,6 +16,7 @@ from paver.easy import BuildFailure, sh, task
 
 from .utils.envs import Env
 from .utils.timer import timed
+from six.moves import range
 
 PREREQS_STATE_DIR = os.getenv('PREREQ_CACHE_DIR', Env.REPO_ROOT / '.prereqs_cache')
 NO_PREREQ_MESSAGE = "NO_PREREQ_INSTALL is set, not installing prereqs"

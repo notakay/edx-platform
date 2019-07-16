@@ -4,6 +4,7 @@ https://bok-choy.readthedocs.org/en/latest/
 """
 from __future__ import print_function
 
+from __future__ import absolute_import
 import os
 
 from paver.easy import cmdopts, needs, sh, task
